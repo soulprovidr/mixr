@@ -1,0 +1,35 @@
+#!/usr/bin/python
+
+from pydub import AudioSegment
+from pydub.playback import play
+
+def is_not_empty_string(str):
+	return str != ""
+
+def normalize(sound, target_dBFS):
+	change = target_dBFS - sound.dBFS
+	return sound.apply_gain(change)
+
+# Read each line from the playlist into a list.
+with open('playlist.txt') as f:
+	tracklist = filter(is_not_empty_string, f.read().split("\n"))
+	tracklist = [
+		AudioSegment.from_mp3(file_path) for file_path in tracklist
+	]
+
+# Remove the intro from the tracklist.
+mix = tracklist.pop(0)
+# Add the first track without crossfading.
+mix = mix.append(tracklist.pop(0))
+
+two_seconds = 2 * 1000
+
+# Concatenate remaining tracks with 2 second crossfade.
+for track in tracklist:
+	track = normalize(track, -20.0)
+	mix = mix.append(track, crossfade=two_seconds)
+
+mix = mix.fade_out(20000)
+
+output = open("playlist.mp3", 'wb')
+mix.export(output, format='mp3')
