@@ -1,3 +1,6 @@
 *.mp3
 *.txt
 .DS_Store
+*.egg-info/
+dist/
+build/
