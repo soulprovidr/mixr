@@ -27,19 +27,19 @@ def normalize(sound, target_dBFS):
 
 parser = argparse.ArgumentParser(
     description='Generate a mix from a list of .mp3 files.')
-parser.add_argument('tracklist', metavar='<path>',
+parser.add_argument('tracklist', metavar='<filename>',
                     help='Path to the tracklist file.')
-parser.add_argument('-c', '--crossfade', metavar='<seconds=2>', default=2,
+parser.add_argument('--crossfade', metavar='<seconds=2>', default=2,
                     type=int, help='Crossfade duration (in seconds).')
-parser.add_argument('-f', '--fade-out', metavar='<seconds=20>', default=20,
+parser.add_argument('--fade-out', metavar='<seconds=20>', default=20,
                     type=int, help='Fade out duration (in seconds).')
-parser.add_argument('-i', '--intro', action='store_const', const=True,
-                    help='Intro mode (i.e. no initial crossfade).')
-parser.add_argument('-l', '--loudness', metavar='<dBFS=-20.0>', type=float, default=-20.0,
-                    help='Normalize the output volume to this dBFS value.')
-parser.add_argument('-o', '--output', metavar='<filename>',
+parser.add_argument('--gain', metavar='<dBFS=-20.0>', type=float, default=-20.0,
+                    help='Target gain level for mix.')
+parser.add_argument('--intro', action='store_const', const=True,
+                    help='Intro mode (i.e. don\'t crossfade first track).')
+parser.add_argument('--output', metavar='<filename>',
                     default=get_default_output_name(),
-                    help='Name of the output file.')
+                    help='Path to the output file.')
 
 
 ###############################################################################
@@ -58,7 +58,7 @@ def main():
     # Concatenate remaining tracks with specified crossfade duration.
     crossfade_duration = args.crossfade * 1000
     for track in tracks:
-        track = normalize(track, args.loudness)
+        track = normalize(track, args.gain)
         mix = mix.append(track, crossfade=crossfade_duration)
 
     # Fade the mix out.
