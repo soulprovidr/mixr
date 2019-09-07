@@ -1,5 +1,5 @@
 # mixr
-> CLI tool to concatenate a series of .mp3 files into a mix.
+> Generate an MP3 mix from the command line.
 
 mixr leverages the excellent [pydub](https://github.com/xxx/pydub) library to concatenate a list of MP3 files, with crossfading and normalization.
 
@@ -9,7 +9,7 @@ usage: mixr [-h] [--crossfade <seconds=2>] [--fade-out <seconds=20>]
             [--gain <dBFS=-20.0>] [--intro] [--output <filename>]
             <tracklist>
 
-Generate a mix from a list of .mp3 files.
+Generate an MP3 mix from the command line.
 
 positional arguments:
   <tracklist>            Path to the tracklist file.
@@ -50,7 +50,7 @@ optional arguments:
 
 ```
 $ mixr tracklist.txt
-Mix successfully exported as: 09-04-2019-23:49:32.mp3
+Mix successfully exported as: Sep-04-2019-23:49:32.mp3
 ```
 
 ## License
