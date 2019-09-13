@@ -1,7 +1,7 @@
 # mixr
 > Generate an MP3 mix from the command line.
 
-mixr leverages the excellent [pydub](https://github.com/xxx/pydub) library to concatenate a list of MP3 files, with crossfading and normalization.
+mixr leverages the excellent [pydub](https://github.com/jiaaro/pydub) library to concatenate a list of MP3 files, with crossfading and normalization.
 
 ```
 $ mixr -h
