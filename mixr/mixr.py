@@ -30,6 +30,8 @@ parser = argparse.ArgumentParser(
     description='Generate a mix from an M3U playlist.')
 parser.add_argument('playlist', metavar='<filename>',
                     help='Path to the playlist file.')
+parser.add_argument('--bitrate', metavar='<bitrate=320k>', default='320k',
+                    type=str, help='Bitrate of output file')
 parser.add_argument('--crossfade', metavar='<seconds=2>', default=2,
                     type=int, help='Crossfade duration (in seconds).')
 parser.add_argument('--fade-out', metavar='<seconds=20>', default=20,
@@ -68,7 +70,7 @@ def main():
 
     # Save the mix as an .mp3 file.
     output = open(args.output, 'wb')
-    mix.export(output, format='mp3')
+    mix.export(output, format='mp3', bitrate=args.bitrate)
     print('Mix successfully exported as: {0}'.format(args.output))
 
 
