@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name = 'mixr',
-    description = 'CLI tool to concatenate a series of .mp3 files into a mix.',
+    description = 'Generate an MP3 mix from the command line',
     url = 'https://github.com/soulprovidr/mixr',
     packages = find_packages(),
     entry_points ={ 
@@ -9,7 +9,7 @@ setup(
             'mixr = mixr.mixr:main'
         ] 
     }, 
-    version = '1.0',
+    version = '1.1.0',
     author = 'Shola Anozie',
     author_email = 'shola@soulprovidr.fm',
     install_requires = ['pydub']

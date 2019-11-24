@@ -8,10 +8,11 @@ from pydub.playback import play
 def get_default_output_name():
     return '{0}.mp3'.format(datetime.datetime.today().strftime('%b-%d-%Y-%H:%M:%S'))
 
-# Create a list of AudioSegments in the order listed in the `tracklist` file.
-def get_tracks(tracklist_path):
-    with open(tracklist_path) as f:
-        file_list = filter(lambda str: bool(str), f.read().split("\n"))
+# Create a list of AudioSegments in the order listed in the `playlist` file.
+def get_tracks(playlist_path):
+    is_file_path = lambda str: bool(str) and str[0] is not '#'
+    with open(playlist_path) as f:
+        file_list = filter(is_file_path, f.read().split("\n"))
         return [
             AudioSegment.from_mp3(file_path) for file_path in file_list
         ]
@@ -26,14 +27,16 @@ def normalize(sound, target_dBFS):
 
 
 parser = argparse.ArgumentParser(
-    description='Generate a mix from a list of .mp3 files.')
-parser.add_argument('tracklist', metavar='<filename>',
-                    help='Path to the tracklist file.')
+    description='Generate a mix from an M3U playlist.')
+parser.add_argument('playlist', metavar='<filename>',
+                    help='Path to the playlist file.')
+parser.add_argument('--bitrate', metavar='<bitrate=320k>', default='320k',
+                    type=str, help='Bitrate of output file')
 parser.add_argument('--crossfade', metavar='<seconds=2>', default=2,
                     type=int, help='Crossfade duration (in seconds).')
 parser.add_argument('--fade-out', metavar='<seconds=20>', default=20,
                     type=int, help='Fade out duration (in seconds).')
-parser.add_argument('--gain', metavar='<dBFS=-20.0>', type=float, default=-20.0,
+parser.add_argument('--gain', metavar='<dBFS=-10.0>', type=float, default=-10.0,
                     help='Target gain level for mix.')
 parser.add_argument('--intro', action='store_const', const=True,
                     help='Intro mode (i.e. don\'t crossfade first track).')
@@ -48,7 +51,7 @@ parser.add_argument('--output', metavar='<filename>',
 def main():
     args = parser.parse_args()
 
-    tracks = get_tracks(args.tracklist)
+    tracks = get_tracks(args.playlist)
     mix = tracks.pop(0)
 
     # In intro mode, add the first track without crossfading.
@@ -67,7 +70,7 @@ def main():
 
     # Save the mix as an .mp3 file.
     output = open(args.output, 'wb')
-    mix.export(output, format='mp3')
+    mix.export(output, format='mp3', bitrate=args.bitrate)
     print('Mix successfully exported as: {0}'.format(args.output))
 
 

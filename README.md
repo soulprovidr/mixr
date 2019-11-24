@@ -1,26 +1,26 @@
 # mixr
 > Generate an MP3 mix from the command line.
 
-mixr leverages the excellent [pydub](https://github.com/jiaaro/pydub) library to concatenate a list of MP3 files, with crossfading and normalization.
+mixr leverages the excellent [pydub](https://github.com/jiaaro/pydub) library to generate a mix from an M3U playlist file, with crossfading and normalization.
 
 ```
 $ mixr -h
-usage: mixr [-h] [--crossfade <seconds=2>] [--fade-out <seconds=20>]
-            [--gain <dBFS=-20.0>] [--intro] [--output <filename>]
-            <tracklist>
+usage: mixr [-h] [--bitrate <bitrate=320k>] [--crossfade <seconds=2>] [--fade-out <seconds=20>] [--gain <dBFS=-10.0>] [--intro] [--output <filename>] <filename>
 
-Generate an MP3 mix from the command line.
+Generate a mix from an M3U playlist.
 
 positional arguments:
-  <tracklist>            Path to the tracklist file.
+  <filename>            Path to the playlist file.
 
 optional arguments:
   -h, --help            show this help message and exit
+  --bitrate <bitrate=320k>
+                        Bitrate of output file.
   --crossfade <seconds=2>
                         Crossfade duration (in seconds).
   --fade-out <seconds=20>
                         Fade out duration (in seconds).
-  --gain <dBFS=-20.0>   Target gain level for mix.
+  --gain <dBFS=-10.0>   Target gain level for mix.
   --intro               Intro mode (i.e. don't crossfade first track).
   --output <filename>   Path to the output file.
 ```
@@ -40,16 +40,19 @@ optional arguments:
 
 ## Usage example
 
-**tracklist.txt**
+**playlist.m3u**
 ```
-/home/soulprovidr/Music/Michael Jackson - Rock With You.mp3
-/home/soulprovidr/Music/Michael Henderson - Let Love Enter.mp3
-/home/soulprovidr/Music/Michael Franks - Down In Brazil.mp3
-/home/soulprovidr/Music/Quincy Jones - Betcha' Wouldn't Hurt Me.mp3
+#EXTM3U
+#EXTINF:345,11 2Pac - Can U Get Away (Me Against The World)
+/storage/Music/staging/2Pac - Me Against The World/2Pac - Can U Get Away.mp3
+#EXTINF:279,9 2Pac - Dear Mama (Me Against The World)
+/storage/Music/staging/2Pac - Me Against The World/2Pac - Dear Mama.mp3
+#EXTINF:294,10 2Pac - It Ain't Easy (Me Against The World)
+/storage/Music/staging/2Pac - Me Against The World/2Pac - It Ain't Easy.mp3
 ```
 
 ```
-$ mixr tracklist.txt
+$ mixr playlist.txt --bitrate 128kbps
 Mix successfully exported as: Sep-04-2019-23:49:32.mp3
 ```
 
