@@ -36,7 +36,7 @@ parser.add_argument('--crossfade', metavar='<seconds=2>', default=2,
                     type=int, help='Crossfade duration (in seconds).')
 parser.add_argument('--fade-out', metavar='<seconds=20>', default=20,
                     type=int, help='Fade out duration (in seconds).')
-parser.add_argument('--gain', metavar='<dBFS=-20.0>', type=float, default=-20.0,
+parser.add_argument('--gain', metavar='<dBFS=-10.0>', type=float, default=-10.0,
                     help='Target gain level for mix.')
 parser.add_argument('--intro', action='store_const', const=True,
                     help='Intro mode (i.e. don\'t crossfade first track).')
