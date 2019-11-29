@@ -1,5 +1,5 @@
 # mixr
-> Generate an MP3 mix from the command line.
+> Generate an MP3 mix from an .m3u playlist.
 
 mixr leverages the excellent [pydub](https://github.com/jiaaro/pydub) library to generate a mix from an M3U playlist file, with crossfading and normalization.
 
