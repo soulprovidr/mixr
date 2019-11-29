@@ -52,7 +52,7 @@ optional arguments:
 ```
 
 ```
-$ mixr playlist.m3u --bitrate 128kbps
+$ mixr playlist.m3u --bitrate 128k
 Mix successfully exported as: Sep-04-2019-23:49:32.mp3
 ```
 
