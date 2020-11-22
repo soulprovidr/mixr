@@ -47,7 +47,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('playlist', metavar='<filename>',
                     help='Path to the playlist file.')
 parser.add_argument('--bitrate', metavar='<bitrate=320k>', default='320k',
-                    type=str, help='Bitrate of output file')
+                    type=str, help='Bitrate of output file.')
 parser.add_argument('--crossfade', metavar='<seconds=2>', default=2,
                     type=int, help='Crossfade duration (in seconds).')
 parser.add_argument('--fade-out', metavar='<seconds=20>', default=20,
