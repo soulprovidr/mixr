@@ -15,14 +15,15 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   --bitrate <bitrate=320k>
-                        Bitrate of output file.
+                        Bitrate of output file
   --crossfade <seconds=2>
                         Crossfade duration (in seconds).
   --fade-out <seconds=20>
                         Fade out duration (in seconds).
   --gain <dBFS=-10.0>   Target gain level for mix.
-  --intro               Intro mode (i.e. don't crossfade first track).
   --output <filename>   Path to the output file.
+  --json                Print metadata to JSON file.
+
 ```
 
 ## Installation
