@@ -8,7 +8,7 @@ from pydub.playback import play
 
 # Generate a default filename, based on the current datetime.
 def get_default_output_name():
-    return '{0}.mp3'.format(datetime.datetime.today().strftime('%b-%d-%Y-%H:%M:%S'))
+    return '{0}.mp3'.format(datetime.datetime.today().strftime('%b-%d-%Y-%H%M%S'))
 
 # Extract artist + title from each playlist entry.
 def get_audio_meta(playlist_lines):
