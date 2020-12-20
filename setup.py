@@ -9,7 +9,7 @@ setup(
             'mixr = mixr.mixr:main'
         ] 
     }, 
-    version = '2.0.0',
+    version = '2.0.1',
     author = 'Shola Anozie',
     author_email = 'shola@soulprovidr.fm',
     install_requires = ['pydub']

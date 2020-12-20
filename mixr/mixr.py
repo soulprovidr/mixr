@@ -1,33 +1,36 @@
 import argparse
 import datetime
 import json
+from urllib.parse import unquote
 
 from pydub import AudioSegment
 from pydub.playback import play
 
 # Generate a default filename, based on the current datetime.
 def get_default_output_name():
-    return '{0}.mp3'.format(datetime.datetime.today().strftime('%b-%d-%Y-%H:%M:%S'))
+    return '{0}.mp3'.format(datetime.datetime.today().strftime('%b-%d-%Y-%H%M%S'))
 
 # Extract artist + title from each playlist entry.
 def get_audio_meta(playlist_lines):
-    # #EXTINF:345,11 2Pac - Can U Get Away (Me Against The World)
+    # #EXTINF:345,2Pac - Can U Get Away (Me Against The World)
     is_meta = lambda str: bool(str) and str.startswith('#EXTINF')
     entries = filter(is_meta, playlist_lines)
     # 2Pac - Can U Get Away (Me Against The World)
-    strip_headers = lambda str: str.split(' ', 1)[1]
+    strip_headers = lambda str: str.split(',', 1)[1]
     entries = map(strip_headers, entries)
     # { 'artist': '2Pac', 'title': 'Can U Get Away (Me Against The World)' }
     create_dict = lambda entry: dict([
         ('artist', entry.split(' - ')[0]),
         ('title', entry.split(' - ')[1])
     ])
-    return list(map(create_dict, entries))
+    entries = map(create_dict, entries)
+    return list(entries)
 
 # Create a list of AudioSegments in the order listed in the `playlist` file.
 def get_audio_segments(playlist_lines):
     is_file_path = lambda str: bool(str) and str[0] != '#'
     file_list = filter(is_file_path, playlist_lines)
+    file_list = map(unquote, file_list)
     return [
         AudioSegment.from_mp3(file_path) for file_path in file_list
     ]
@@ -76,9 +79,10 @@ def main():
         if args.json:
             audio_meta = get_audio_meta(playlist_lines)
 
+
     # Concatenate audio_segments with specified crossfade duration.
     for i in range(len(audio_segments)):
-        # Update audio_meta entry with track start time.
+        # Update corresponding audio_meta entry with track start time.
         if args.json:
             audio_meta[i]['start'] = len(mix)
         # Normalize audio segment.
