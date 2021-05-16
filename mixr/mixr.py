@@ -13,7 +13,7 @@ def get_default_output_name():
 # Extract artist + title from each playlist entry.
 def get_audio_meta(playlist_lines):
     # #EXTINF:345,2Pac - Can U Get Away (Me Against The World)
-    is_meta = lambda str: bool(str) and str.startswith('#EXTINF')
+    is_meta = lambda str: bool(str) and str.startswith('#')
     entries = filter(is_meta, playlist_lines)
     # 2Pac - Can U Get Away (Me Against The World)
     strip_headers = lambda str: str.split(',', 1)[1]
@@ -28,11 +28,11 @@ def get_audio_meta(playlist_lines):
 
 # Create a list of AudioSegments in the order listed in the `playlist` file.
 def get_audio_segments(playlist_lines):
-    is_file_path = lambda str: bool(str) and str[0] != '#'
+    is_file_path = lambda str: bool(str) and not str.startswith('#')
     file_list = filter(is_file_path, playlist_lines)
     file_list = map(unquote, file_list)
     return [
-        AudioSegment.from_mp3(file_path) for file_path in file_list
+        AudioSegment.from_file(file) for file in file_list
     ]
 
 
@@ -53,8 +53,6 @@ parser.add_argument('--bitrate', metavar='<bitrate=320k>', default='320k',
                     type=str, help='Bitrate of output file.')
 parser.add_argument('--crossfade', metavar='<seconds=2>', default=2,
                     type=int, help='Crossfade duration (in seconds).')
-parser.add_argument('--fade-out', metavar='<seconds=20>', default=20,
-                    type=int, help='Fade out duration (in seconds).')
 parser.add_argument('--gain', metavar='<dBFS=-10.0>', type=float, default=-10.0,
                     help='Target gain level for mix.')
 parser.add_argument('--output', metavar='<filename>',
@@ -73,7 +71,7 @@ def main():
     audio_segments = []
     mix = AudioSegment.empty()
 
-    with open(args.playlist) as f:
+    with open(args.playlist, mode="r", encoding="utf-8-sig") as f:
         playlist_lines = f.read().split("\n")
         audio_segments = get_audio_segments(playlist_lines)
         if args.json:
@@ -91,10 +89,6 @@ def main():
         # Append segment to mix.
         crossfade_duration = args.crossfade * 1000 if i != 0 else 0
         mix = mix.append(segment, crossfade=crossfade_duration)
-
-    # Fade the mix out.
-    fadeout_duration = args.fade_out * 1000
-    mix = mix.fade_out(fadeout_duration)
 
     # Save the mix as an .mp3 file.
     output = open(args.output, 'wb')
